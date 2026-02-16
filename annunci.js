@@ -22,6 +22,8 @@ fetch('./annunci.json').then( (response)=> response.json() ).then((data)=>{
     // querySelctor
     let radioWrapper = document.querySelector('#radioWrapper');
     let cardWrapper = document.querySelector('#cardWrapper');
+
+    data.sort((a, b)=> a.price - b.price);
     
     
     function radioCreate() {
@@ -79,8 +81,9 @@ fetch('./annunci.json').then( (response)=> response.json() ).then((data)=>{
 
     // funzione che ci permette di creare una card con immagini casuali 
 
-    function showCards() {
-    data.forEach((annuncio, i)=> {
+    function showCards(array) {
+        cardWrapper.innerHTML = '';
+    array.forEach((annuncio, i)=> {
         let div = document.createElement('div');
         div.classList.add('card-custom');
         div.innerHTML =`
@@ -92,10 +95,86 @@ fetch('./annunci.json').then( (response)=> response.json() ).then((data)=>{
             });
         };
         
-        showCards()
+        showCards(data)
 
-    
-    
+
+
+        // in questa funzione ho bisogno di ottenere un nuovo array e gli elementi del nuovo array dovranno soddisfare la condizione per la quale la loro category sia uguale alla categoria che stiamo passando alla funzione
+        function filterByCategory(categoria) {
+            if (categoria != 'All') {
+              let filtered = data.filter((annuncio)=> annuncio.category == categoria )
+            console.log(filtered)
+            showCards(filtered)  
+            } else{
+                showCards(data)
+            }
+            
+            
+        }
+
+        
+
+        let radioButtons = document.querySelectorAll('.form-check-input')
+        
+        radioButtons.forEach((button)=>{
+            button.addEventListener('click', ()=>{
+                filterByCategory(button.id)
+            })
+        })
+
+        let priceInput = document.querySelector('#priceInput')
+        let priceValue = document.querySelector('#priceValue')
+
+
+        function setPriceInput(){
+            let prices = data.map((annuncio)=> +annuncio.price);
+            prices.sort((a, b)=> a - b);
+            let maxPrice = Math.ceil(prices.pop())
+            priceInput.max=maxPrice;
+            priceInput.value = maxPrice;  
+            priceValue.innerHTML= maxPrice;
+
+
+
+
+
+            console.log(prices);
+            
+        };
+        setPriceInput();
+
+        function filterByPrice() {
+            let filtered = data.filter((annuncio)=> +annuncio.price <= priceInput.value )
+            console.log(filtered);
+             showCards(filtered)
+
+            
+        };
+
+        priceInput.addEventListener('input' , ()=> {
+           priceValue.innerHTML = priceInput.value
+           filterByPrice();
+
+        })
+
+
+        let wordInput = document.querySelector ('#wordInput')
+
+        function filterByWord(parola) {
+            let filtered = data.filter((annuncio)=> annuncio.name.toLowerCase().includes(parola.toLowerCase()));
+            
+            showCards(filtered)
+        }
+      
+
+        wordInput.addEventListener('input', ()=>{
+            filterByWord(wordInput.value);
+        })
+
+        
+
+
+
 });
 
 
