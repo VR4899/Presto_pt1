@@ -1,20 +1,25 @@
 *{   
-
- font-family: "Lato", sans-serif;
+    
+    font-family: "Lato", sans-serif;
 }
 
 
 h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5 {
-  font-family: "Orbitron", sans-serif;
-  
+    font-family: "Orbitron", sans-serif;
+    
 }
 
 :root{
-    --yellow: rgb(255, 232, 31);
+    --yellow: #ffe81f;
     --black: #171717;
     --white: #f4f4f4;
     --red: #e4202b;
     
+}
+
+body{
+    background-color: var(--black);
+    color: var(--yellow);
 }
 
 .bg-yellow{
@@ -48,11 +53,11 @@ h1, h2, h3, h4, h5, .h1, .h2, .h3, .h4, .h5 {
     font-weight:700;
 }
 .nav-link:hover {
-
-color: var(--white) !important;
-
-text-shadow: 2px 2px  5px var(--red), -2px  -2px 5px var(--red);
-
+    
+    color: var(--white) !important;
+    
+    text-shadow: 2px 2px  5px var(--red), -2px  -2px 5px var(--red);
+    
 }
 
 
@@ -60,4 +65,122 @@ text-shadow: 2px 2px  5px var(--red), -2px  -2px 5px var(--red);
     width: 50px;
 }
 
+.logo2{
+    width: 100px;
+    transition: 0.5s;
+}
 
+
+/* Header */
+.header{
+    background-image:linear-gradient(rgba(0, 0, 0), transparent, rgba(0, 0, 0)),url(https://static.vecteezy.com/system/resources/thumbnails/017/563/240/original/hyperspace-for-scientific-films-screensaver-universe-background-4k-footage-free-video.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.btn-custom{
+    color: var(--yellow);
+    background-color: var(--black);
+    border: 2px solid var(--yellow);
+    border-radius: 50px;
+    margin: 0px 15px;
+    transition: 0.5s;
+    
+}
+.btn-custom:hover{
+    color: var(--black);
+    background-color: var(--yellow);
+    
+    transform: scale(1.1);
+    
+}
+
+/* Positioned */
+.positioned{
+    position: relative;
+    top: -150px;
+}
+
+.col-custom{
+    padding: 10px;
+    border: 2px solid var(--black);
+    cursor: pointer;
+    transition: 0.5s;
+    color: var(--black);
+    
+}
+
+.col-custom:hover{
+    transform: scale(1.1);
+    background-color: var(--black);
+    color: var(--red);
+    border: 2px solid var(--red);
+    
+}
+
+@media screen and (max-width: 600px){
+    .positioned{
+        position: static;
+        
+    }
+}
+
+/* Numeri incrementari */
+
+.number{
+    font-size: 50px;
+    font-weight: 900;
+    
+}
+
+/* Swiper */
+
+.swiper{
+    height: 350px;
+}
+
+.card-review{
+    height: 250px;
+    width: 500px;
+    border: 2px solid var(--yellow);
+    border-radius: 20px;
+}
+.swiper-slide{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+}
+
+/* Pagina degli annunci */
+
+.accordion-item, .accordion-button{
+    background-color: var(--black);
+    color: var(--yellow);
+
+}
+.accordion-button:not(.collapsed){
+    background-color: var(--black);
+    color: var(--red);
+    
+}
+.accordion-button:focus{
+    box-shadow: none;
+}
+/* card annunci */
+.card-custom{
+   
+    width: 30%;
+    border: 2px solid var(--yellow);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
+.img-card{
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
