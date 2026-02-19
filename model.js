@@ -18,7 +18,7 @@ let check = false
 
 window.addEventListener(`scroll`, ()=>{
     let scrolled = window.scrollY;
-
+    
     if (scrolled > 0) {
         navbar.classList.remove('bg-black');
         navbar.classList.add('bg-yellow');
@@ -29,7 +29,7 @@ window.addEventListener(`scroll`, ()=>{
             link.style.color = 'var(--black)'
         });
         logoNavbar.src = './media/logo-b.png'
-
+        
         lightsaber.src = './media/spada-b.png'
         
         
@@ -39,30 +39,30 @@ window.addEventListener(`scroll`, ()=>{
         navbar.style.height = '140px'
         collapse.classList.add(`bg-black`)
         collapse.classList.remove(`bg-yellow`)
-       
+        
         links.forEach((link)=>{
             link.style.color= 'var(--yellow)'
         })
         logoNavbar.src = './media/logo-y.png'
-
+        
         lightsaber.src = './media/spada-y.png'
-
-
+        
+        
     }
-
+    
     
 })
 
 lightsaber.addEventListener ('click', () =>{
     if (check == false){
-    lightsaber.style.transform = 'rotate(-90deg)'
-    check = true
-
+        lightsaber.style.transform = 'rotate(-90deg)'
+        check = true
+        
     }else{
-       lightsaber.style.transform = 'rotate(0deg)'
-       check = false
+        lightsaber.style.transform = 'rotate(0deg)'
+        check = false
     }
-
+    
 })
 
 
@@ -82,47 +82,35 @@ let confirm = true
 
 
 function createInterval( n, element, time) {
-
-let counter = 0
-
-let interval = setInterval( ()=>{
-    if (counter < n) {
-        counter++;
-        element.innerHTML = counter
+    
+    let counter = 0
+    
+    let interval = setInterval( ()=>{
+        if (counter < n) {
+            counter++;
+            element.innerHTML = counter
+            
+        } else{
+            console.log(`adesso mi fermo`);
+            clearInterval(interval);
+            
+            
+        }
         
-    } else{
-        console.log(`adesso mi fermo`);
-        clearInterval(interval);
-
         
-    }
-
-
-}, time);
-setTimeout( () => {
-    confirm = true
-}, 8000);
-
+    }, time);
+    setTimeout( () => {
+        confirm = true
+    }, 8000);
+    
 }
 
 
 
-
-
-//IntersectionObserver: è una Classe del browser che si occupa di far scattare una funzione nel monmento in cui sul browser sono visibili gli elementi HTML che noi gli indichiamo
-
-// new: Keyworrd che mi permette di generare un oggetto partendo da una Classe
-
-//nella variabile stiamo creando un oggetto di classe IntersectionObserver
-
-// in questo oggetto scatta una callback la quale accetta un qualsisi numero di variabili e li salva nel parametro formale entries che e un array 
-
-
-
 let observer = new IntersectionObserver( (entries)=>{
-
+    
     entries.forEach((entry)=> {
-
+        
         if(entry.isIntersecting && confirm){
             createInterval(100, firstNumber, 100);
             createInterval(200, secondNumber, 50);
@@ -130,27 +118,30 @@ let observer = new IntersectionObserver( (entries)=>{
             confirm = false;
         }
     })
-
+    
 })
 
 observer.observe(firstNumber)
 
 let reviews = [
-    { user: "Matteo", description: " Stupendo ", rank: 5 },
-    { user: "Vincenzo", description: "veramente bel sito", rank: 4 },
-    { user: "Roberta", description: "Mi piace tranne per Star Trek", rank: 3 },
-    { user: "Marco", description: "Bella merda", rank: 2 },
-    { user: "Valerio", description: "Orribile", rank: 1 },
-
-
+    
+    { user: "Matteo", description: "Servizio eccezionale, rapido e intuitivo. Esperienza davvero piacevole.", rank: 5 },
+    { user: "Vincenzo", description: "Sito ben curato, facile da usare e molto chiaro nella navigazione.", rank: 4 },
+    { user: "Roberta", description: "Buona idea e buon design, ma alcuni dettagli possono essere migliorati.", rank: 3 },
+    { user: "Marco", description: "Esperienza sotto le aspettative, alcune funzioni risultano poco fluide.", rank: 2 },
+    { user: "Valerio", description: "Servizio confuso e poco intuitivo, non mi ha convinto.", rank: 1 }
 ];
+
+
+
+
 
 let swiperWrapper = document.querySelector(".swiper-wrapper");
 
 reviews.forEach((recensione) => {
     let div = document.createElement("div");
     div.classList.add("swiper-slide");
-
+    
     div.innerHTML = `
         <div class="card-review">
                     <p class="lead text-center">${recensione.description}</p>
@@ -158,33 +149,31 @@ reviews.forEach((recensione) => {
                     <div class="d-flex justify-content-center star">
                     </div>
         </div>
-
+    
                  
     `;
-
+    
     swiperWrapper.appendChild(div);
-
-
+    
+    
 });
 
 let stars= document.querySelectorAll('.star')
-// <i class="fa-solid fa-star"></i>
 
-// <i class="fa-regular fa-star"></i>
 
 stars.forEach((star, index) => {
-  for (let i = 0; i < reviews[index].rank; i++) {
-    let icon = document.createElement("i");
-    icon.classList.add("fa-solid", "fa-star");
-    star.appendChild(icon);
-  }
-  let difference = 5 - reviews[index].rank
-  for (let i = 1; i <= difference; i++) {
-    let icon = document.createElement("i");
-    icon.classList.add("fa-regular", "fa-star");
-    star.appendChild(icon);
-  }
-
+    for (let i = 0; i < reviews[index].rank; i++) {
+        let icon = document.createElement("i");
+        icon.classList.add("fa-solid", "fa-star");
+        star.appendChild(icon);
+    }
+    let difference = 5 - reviews[index].rank
+    for (let i = 1; i <= difference; i++) {
+        let icon = document.createElement("i");
+        icon.classList.add("fa-regular", "fa-star");
+        star.appendChild(icon);
+    }
+    
 });
 
 
@@ -192,18 +181,18 @@ stars.forEach((star, index) => {
 // Swiper
 
 const swiper = new Swiper('.swiper', {
-  // Optional parameters
+    
     effect: "flip",
     
     grabCursor: true,
     loop: true,
-autoplay: {
+    autoplay: {
         delay: 2500,
-},
-  // Navigation arrows
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-
+    },
+    
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+    
 });

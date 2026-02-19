@@ -1,53 +1,17 @@
-//.json: JavaScript Object Notification; 
-
-//API : sono chiavi che ci permettono di raggiungere un .json online
-
-// fetch(): chiata aasincrona che ci permette di collegarci ad un JSON e da esso estrae il dato che lo sotto forma di in una Promise
-
-//then(): questo metodo ci permette di convertire la Promise nel dato strutturale e di poterlo utilizzare come tale su JS
-
-//1. fetch() = mi collego al .json e ne ottengo una promise
-
-//2. .then()= converto la promise in un dato strutturale JS
-
-//3. .then()= utilizzare il dato ottenuto
-
-// .json(): metodo delle Promise che mi permette di convertirla in Oggetto JS
 
 
-
-fetch('./annunci.json').then( (response)=> response.json() ).then((data)=>{
+fetch('./annunci1.json').then( (response)=> response.json() ).then((data)=>{
     
     
     // querySelctor
     let radioWrapper = document.querySelector('#radioWrapper');
     let cardWrapper = document.querySelector('#cardWrapper');
-
+    
     data.sort((a, b)=> a.price - b.price);
     
     
     function radioCreate() {
         let categories = data.map( (annuncio )=> annuncio.category );
-        
-        
-        //prendere una sola categoria
-        // let uniqueCategories=[];
-        
-        
-        // categories.forEach((category) => {
-            //     if ( !uniqueCategories.includes(category)) {
-        //         uniqueCategories.push(category)
-        
-        //     }
-        //     console.log(uniqueCategories);
-        
-        
-        // });
-        
-        
-        // Set(): e una classe che mi restituisce, partendo da un array, un nuovo oggetto di tipo Set il quale contiene solo valori univoci
-        
-        // Array.from(): mi permette di covertire un array-like in un array
         
         let uniqueCategories = Array.from(new Set(categories))
         
@@ -66,121 +30,134 @@ fetch('./annunci.json').then( (response)=> response.json() ).then((data)=>{
         
     }
     radioCreate()
-
-    // funzione che ci permette di rendere una stringa piu breme per massimizare lo spazio nella card
+    
+    
     function truncateWord(string) {
         if(string.length > 15){
             return string.split(' ')[0] + '...';
-
+            
         } else {
             return string;
         }
         
     }
     
-
-    // funzione che ci permette di creare una card con immagini casuali 
-
+    
+    
+    
     function showCards(array) {
         cardWrapper.innerHTML = '';
-    array.forEach((annuncio, i)=> {
-        let div = document.createElement('div');
-        div.classList.add('card-custom');
-        div.innerHTML =`
+        array.forEach((annuncio, i)=> {
+            let div = document.createElement('div');
+            div.classList.add('card-custom');
+            div.innerHTML =`
                     <img src="https://picsum.photos/${300 + i}" alt="imagine casuale" class="img-fluid img-card">
                     <p class="h2" title="${annuncio.name}">${truncateWord(annuncio.name)}</p>
                     <p class="h4">${annuncio.category}</p>
                     <p class="lead">${annuncio.price}€</p>`;
-                cardWrapper.appendChild(div)
-            });
-        };
+            cardWrapper.appendChild(div)
+        });
+    };
+    
+    showCards(data)
+    
+    let radioButtons = document.querySelectorAll('.form-check-input')
+    
+    
+    function filterByCategory(array) {
         
-        showCards(data)
-
-
-
-        // in questa funzione ho bisogno di ottenere un nuovo array e gli elementi del nuovo array dovranno soddisfare la condizione per la quale la loro category sia uguale alla categoria che stiamo passando alla funzione
-        function filterByCategory(categoria) {
-            if (categoria != 'All') {
-              let filtered = data.filter((annuncio)=> annuncio.category == categoria )
-            console.log(filtered)
-            showCards(filtered)  
-            } else{
-                showCards(data)
-            }
+        let arrayFromNodeList = Array.from(radioButtons);
+        let button = arrayFromNodeList.find((bottone)=> bottone.checked);
+        let categoria = button.id
+        console.log(categoria);
+        
+        
+        
+        if (categoria != 'All') {
+            let filtered = array.filter((annuncio)=> annuncio.category == categoria )
             
-            
+            return filtered  
+        } else{
+            return  array
         }
-
         
-
-        let radioButtons = document.querySelectorAll('.form-check-input')
         
-        radioButtons.forEach((button)=>{
-            button.addEventListener('click', ()=>{
-                filterByCategory(button.id)
-            })
+    }
+    
+    
+    
+    
+    radioButtons.forEach((button)=>{
+        button.addEventListener('click', ()=>{
+            setPriceInput();
+            globalFilter();
         })
-
-        let priceInput = document.querySelector('#priceInput')
-        let priceValue = document.querySelector('#priceValue')
-
-
-        function setPriceInput(){
-            let prices = data.map((annuncio)=> +annuncio.price);
-            prices.sort((a, b)=> a - b);
-            let maxPrice = Math.ceil(prices.pop())
-            priceInput.max=maxPrice;
-            priceInput.value = maxPrice;  
-            priceValue.innerHTML= maxPrice;
-
-
-
-
-
-            console.log(prices);
-            
-        };
-        setPriceInput();
-
-        function filterByPrice() {
-            let filtered = data.filter((annuncio)=> +annuncio.price <= priceInput.value )
-            console.log(filtered);
-             showCards(filtered)
-
-            
-        };
-
-        priceInput.addEventListener('input' , ()=> {
-           priceValue.innerHTML = priceInput.value
-           filterByPrice();
-
-        })
-
-
-        let wordInput = document.querySelector ('#wordInput')
-
-        function filterByWord(parola) {
-            let filtered = data.filter((annuncio)=> annuncio.name.toLowerCase().includes(parola.toLowerCase()));
-            
-            showCards(filtered)
-        }
-      
-
-        wordInput.addEventListener('input', ()=>{
-            filterByWord(wordInput.value);
-        })
-
+    })
+    
+    let priceInput = document.querySelector('#priceInput')
+    let priceValue = document.querySelector('#priceValue')
+    
+    
+    function setPriceInput(){
+        let prices = filterByCategory(data).map((annuncio)=> +annuncio.price);
+        prices.sort((a, b)=> a - b);
+        let maxPrice = Math.ceil(prices.pop())
+        priceInput.max=maxPrice;
+        priceInput.value = maxPrice;  
+        priceValue.innerHTML= maxPrice;
         
-
-
-
+        
+        
+        
+        
+        console.log(prices);
+        
+    };
+    setPriceInput();
+    
+    
+    function filterByPrice(array) {
+        let filtered = array.filter((annuncio)=> +annuncio.price <= priceInput.value )
+        console.log(filtered);
+        return filtered
+        
+        
+        
+    };
+    
+    priceInput.addEventListener('input' , ()=> {
+        priceValue.innerHTML = priceInput.value
+        globalFilter();
+        
+    })
+    
+    
+    let wordInput = document.querySelector ('#wordInput')
+    
+    function filterByWord(array) {
+        let filtered = array.filter((annuncio)=> annuncio.name.toLowerCase().includes(wordInput.value.toLowerCase()));
+        
+        return filtered
+    }
+    
+    
+    wordInput.addEventListener('input', ()=>{
+        globalFilter();
+    })
+    
+    
+    
+    
+    
+    function globalFilter() {
+        let filteredByCategory = filterByCategory(data);
+        let filteredByPrice = filterByPrice(filteredByCategory);
+        let filteredByWord = filterByWord(filteredByPrice);
+        
+        showCards(filteredByWord);
+    }
+    
+    
 });
 
 
-
-
-
-    
-    
-    
